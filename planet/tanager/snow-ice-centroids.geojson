@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "snow-ice-centroids",
+"features": [
+{ "type": "Feature", "properties": { "id": "20250511_011730_87_4001", "datetime": "2025-05-11T01:17:30.870Z" }, "geometry": { "type": "Point", "coordinates": [ 164.797763940530729, 68.67575266192145 ] } },
+{ "type": "Feature", "properties": { "id": "20250515_202305_00_4001", "datetime": "2025-05-15T20:23:05Z" }, "geometry": { "type": "Point", "coordinates": [ -113.574237615330986, 75.376744421734756 ] } },
+{ "type": "Feature", "properties": { "id": "20250411_163421_16_4001", "datetime": "2025-04-11T16:34:21.163Z" }, "geometry": { "type": "Point", "coordinates": [ -66.976672176295381, 66.347321398727559 ] } },
+{ "type": "Feature", "properties": { "id": "20250514_223907_74_4001", "datetime": "2025-05-14T22:39:07.740Z" }, "geometry": { "type": "Point", "coordinates": [ -158.311016484158415, 65.491237393790342 ] } },
+{ "type": "Feature", "properties": { "id": "20250606_181248_58_4001", "datetime": "2025-06-06T18:12:48.582Z" }, "geometry": { "type": "Point", "coordinates": [ -81.677174265162265, 73.71524275748348 ] } },
+{ "type": "Feature", "properties": { "id": "20250419_173128_87_4001", "datetime": "2025-04-19T17:31:28.870Z" }, "geometry": { "type": "Point", "coordinates": [ -87.367867061453566, 56.044625069814991 ] } },
+{ "type": "Feature", "properties": { "id": "20250516_132954_74_4001", "datetime": "2025-05-16T13:29:54.740Z" }, "geometry": { "type": "Point", "coordinates": [ -12.846365582165818, 75.935018872749453 ] } }
+]
+}
