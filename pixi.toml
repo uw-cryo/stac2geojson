@@ -1,0 +1,11 @@
+[workspace]
+authors = ["Scott Henderson <3924836+scottyhq@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "stac2geojson"
+platforms = ["osx-arm64","linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+rustac = ">=0.8.1,<0.9"
