@@ -6,7 +6,7 @@ platforms = ["osx-arm64","linux-64"]
 version = "0.1.0"
 
 [tasks]
-convert="python stac2geojson.py $CATALOG --centroids"
+convert="python stac2geojson.py $CATALOG"
 
 [dependencies]
 rustac = ">=0.8.1,<0.9"
