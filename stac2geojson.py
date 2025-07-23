@@ -30,6 +30,7 @@ async def catalog2geojson(catalog_url, output_path=None, output_centroids=False)
     """
     Given path to catalog.json read all child items & save as STAC-geoparquet
     """
+    # Configure access to remote Static STAC Catalog via Obstore
     baseurl, catalog_name = os.path.split(catalog_url)
     store = HTTPStore(baseurl)
     catalog = await rustac.read(catalog_name, store=store)
@@ -38,25 +39,38 @@ async def catalog2geojson(catalog_url, output_path=None, output_centroids=False)
     async for _, _, items in rustac.walk(catalog):
         all_items.extend(items)
 
+    # Simplify by storing only a few fields, but add link back to stac browser
+    browser = "https://radiantearth.github.io/stac-browser/#/external"
+    # NOTE: this doesn't have a self link internally... it 'is' the self link :)
+    # therefore sure how to do this for any item since self link not always present...
+    # https://www.planet.com/data/stac/tanager-core-imagery/agriculture/20250608_091605_90_4001/20250608_091605_90_4001.json
+    # https://radiantearth.github.io/stac-browser/#/external/https://www.planet.com/data/stac/tanager-core-imagery/agriculture/20250608_091605_90_4001/20250608_091605_90_4001.json
+    table = rustac.to_arrow(items)
+    gf = gpd.GeoDataFrame.from_arrow(table)
+    cols = ["id","geometry","datetime"]
+    gf = gf[cols]
+    # NOTE: for now a hack ( assumes items always stored with template /{id}/{id}.json )
+    gf['stac_browser'] = gf['id'].apply(lambda id: f"{browser}/{baseurl}/{id}/{id}.json")
+
+    # Back to rustac-py for writing
+    all_items = rustac.from_arrow(gf.to_arrow())
+
     if not output_path:
         output_path = "catalog.geojson"
 
-    # Also save polygon centroids for convenient visualization
-    # NOTE: requires geopandas and pyarrow dependencies
-    if output_centroids:
-        outfile = output_path.replace('.geojson', '-centroids.geojson')
-        table = rustac.to_arrow(items)
-        gf = gpd.GeoDataFrame.from_arrow(table)
-        cols = ["id","geometry","datetime"]
-        centroids = gf[cols].copy()
-        centroids['geometry'] = gf.centroid
-        centroids.to_file(outfile, driver='GeoJSON')
-
+    # TODO: sorted by datetime?
     # Many format options https://stac-utils.github.io/rustac-py/latest/api/#format
     await rustac.write(output_path, all_items, format="ndjson")
 
+    if output_centroids:
+        outfile = output_path.replace('.geojson', '-centroids.geojson')
+        gf['geometry'] = gf.centroid
+        gf.to_file(outfile, driver='GeoJSON')
+
+
 if __name__ == "__main__":
     # TODO: automatically open browser? https://github.com/jwass/geojsonio.py
+    # TODO: add non-default styling https://github.com/mapbox/simplestyle-spec
 
     parser = argparse.ArgumentParser(description="Create a single GeoJSON FeatureCollection from a Static STAC Catalog/Collection URL")
     parser.add_argument("catalog_url", help="URL to the STAC catalog or collection JSON")

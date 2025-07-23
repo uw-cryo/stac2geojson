@@ -1,5 +1,9 @@
 # stac2geojson
-Because sometimes you just want one GeoJSON
+Because sometimes you just want one GeoJSON.
+
+There are many *static* STAC catalogs out there that don't have an API for searching, and while [STAC Browser](https://radiantearth.github.io/stac-browser) is a great web app for exploring these catalogs by Item, sometimes you just want a single GeoJSON to view *all* items in a catalog or collection at once. This works well for smallish catalogs (<1000 Items).
+
+This script creates a copy only of fundamental properties (id, datetime, geometry) and adds a link back to the STAC-browser for convenience in case you want to view the full metadata or download assets. It also optionally creates a `-centroids.geojson` file, because it can be hard to initially see small footprints in a collection when viewing a global map!
 
 ## Create GeoJSON
 
