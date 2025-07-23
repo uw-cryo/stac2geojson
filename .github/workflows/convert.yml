@@ -1,0 +1,34 @@
+name: Stac2GeoJSON
+
+on:
+  workflow_dispatch:
+    inputs:
+      catalog:
+        type: string
+        required: true
+        description: Static STAC catalog or collection URL
+        default: https://www.planet.com/data/stac/tanager-core-imagery/snow-ice/collection.json
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.11
+        with:
+          environments: dev
+          manifest-path: pyproject.toml
+          cache: true
+          frozen: true
+
+      - name: Run Conversion Script
+        env:
+          CATALOG: ${{ inputs.catalog }}
+        run: |
+          pixi run stac2geojson --catalog $CATALOG --centroids
+
+      - name: Upload to GitHub Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: catalog*.geojson
