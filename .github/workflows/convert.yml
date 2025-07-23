@@ -24,7 +24,7 @@ jobs:
         env:
           CATALOG: ${{ inputs.catalog }}
         run: |
-          pixi run stac2geojson --catalog $CATALOG --centroids
+          pixi run convert $CATALOG --centroids
 
       - name: Upload to GitHub Artifact
         uses: actions/upload-artifact@v4
