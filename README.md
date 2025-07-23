@@ -6,21 +6,20 @@ Because sometimes you just want one GeoJSON
 #### Via Pixi Task
 ```
 CATALOG="https://www.planet.com/data/stac/tanager-core-imagery/snow-ice/collection.json"
-pixi run convert $CATALOG
+pixi run convert $CATALOG snow-ice.geojson --centroids
 ```
 
-#### Which is shorthand for the python script:
+#### Or via standard python script
 ```
 python stac2geojson.py $CATALOG snow-ice.geojson --centroids
 ```
 
-#### Via GitHub Action
+#### Or via a GitHub Action
+
+This saves the geojson as an output artifact, which you can access for 90 days
 ```
 gh -R uw-cryo/stac2geojson workflow run convert.yml -f catalog=$CATALOG
 ```
-
-This saves the geojson as an output artifact
-
 
 We recommend adding the geojson outputs to a GitHub repository so that you can use different tools to visualize them:
 
