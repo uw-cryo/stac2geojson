@@ -10,15 +10,13 @@ on:
         default: https://www.planet.com/data/stac/tanager-core-imagery/snow-ice/collection.json
 
 jobs:
-  test:
+  convert:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: prefix-dev/setup-pixi@v0.8.11
         with:
-          environments: dev
-          manifest-path: pyproject.toml
           cache: true
           frozen: true
 
